@@ -1,0 +1,70 @@
+﻿@model ITSupportTicketSystem.Models.Ticket
+@{
+    ViewBag.Title = "Create Ticket";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Use a layout file for consistent page structure
+}
+
+<h2>Create Ticket</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProjectName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DepartmentID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DepartmentID, (SelectList)ViewBag.DepartmentID, "Select Department", new { @class = "form-control", id = "DepartmentID" })
+                @Html.ValidationMessageFor(model => model.DepartmentID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequestedBy, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.RequestedBy, Enumerable.Empty<SelectListItem>(), "Select Employee", new { @class = "form-control", id = "RequestedBy" })
+                @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DepartmentID").change(function () {
+                var departmentId = $(this).val();
+                $.getJSON('/Ticket/GetEmployeesByDepartment', { departmentId: departmentId }, function (data) {
+                    var items = "<option>Select Employee</option>";
+                    $.each(data, function (i, employee) {
+                        items += "<option value='" + employee.Value + "'>" + employee.Text + "</option>";
+                    });
+                    $("#RequestedBy").html(items);
+                });
+            });
+        });
+    </script>
+}

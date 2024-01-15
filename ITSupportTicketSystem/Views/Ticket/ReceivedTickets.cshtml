@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ITSupportTicketSystem.Models.Ticket>
+
+@{
+    ViewBag.Title = "Received Tickets";
+}
+
+<h2>Received Tickets</h2>
+
+@using (Html.BeginForm("ReceivedTickets", "Ticket", FormMethod.Get))
+{
+    <p>
+        Search: @Html.TextBox("searchQuery")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<!-- Add a link/button to navigate to the Project Chart page -->
+<p>
+    @Html.ActionLink("View Project Chart", "ProjectChart", "Ticket", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Project Name", "ReceivedTickets", new { sortOrder = ViewBag.ProjectNameSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Department", "ReceivedTickets", new { sortOrder = ViewBag.DepartmentSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Date Received", "ReceivedTickets", new { sortOrder = ViewBag.DateSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Requestor", "ReceivedTickets", new { sortOrder = ViewBag.RequestorSortParm })
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name) <!-- Assuming Department is a navigation property -->
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Remove", "RemoveTicket", new { id = item.TicketId }, new { onclick = "return confirm('Are you sure you want to remove this ticket?');" })
+            </td>
+        </tr>
+    }
+</table>
+
+<p>
+    @Html.ActionLink("Create New Ticket", "Create")
+</p>

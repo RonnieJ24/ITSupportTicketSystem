@@ -53,17 +53,6 @@ To set up the IT Support Ticket System, follow these steps:
 - IT Support Team members can filter and manage tickets using the search received tickets page.
 - View project overview on the project overview page.
 
-## Contributing
-Contributions to this project are welcome! To contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Commit your changes and push to your fork.
-4. Open a Pull Request to this repository.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
 ## Contact
 For any questions or issues related to this project, please contact:
 - Email: rani_yaqoob@icloud.com
